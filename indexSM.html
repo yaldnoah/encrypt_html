@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="JavaScript implementation of SM2 Algorithm Encryption and Decryption sample." />
+
+    <!--<link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">-->
+    <title>SM2 Algorithm Encryption and Decryption sample</title>
+    <style>
+        textarea {
+            width: 100%;
+        }
+    </style>
+    <!-- for pkcs5pkey -->
+    <script src="sm2.js"></script>
+    <script language="JavaScript" type="text/javascript">
+       /**
+        *  生成秘钥对
+        */
+        function doGenerate() {
+            var ec = new KJUR.crypto.ECDSA({
+                "curve": 'sm2'
+            });
+            var keypair = ec.generateKeyPairHex();
+            // 私钥：keypair.ecprvhex;
+            // 公钥：keypair.ecpubhex;
+            console.log(keypair)
+        }
+
+        function test(){
+
+           /**
+             * [SM2Encrypt description  加密数据]
+             * @param {[type]} data       [待加密数据]
+             * @param {[type]} publickey  [公钥 hex]
+             * @param {[type]} cipherMode [加密模式 C1C3C2:1, C1C2C3:0]
+             * @return {[type]}           [返回加密后的数据 hex]
+             */
+           var cipherText = sm2Encrypt("我是妞见妞爱===", "04b96fb7504d7a0509745b80ae8079d5250119899e8620fe322ff47d3a3cbf7d17330ff6c8019b8c0cb06b4a881aef40240354dded8eef4b9c557c817cd7b3788d", 1);
+           console.log("cipherText:",cipherText)
+
+           /**
+             * [SM2Decrypt sm2 解密数据]
+             * @param {[type]} encrypted  [待解密数据 hex]
+             * @param {[type]} privateKey [私钥 hex]
+             * @param {[type]} cipherMode [加密模式 C1C3C2:1, C1C2C3:0]
+             * @return {[type]}           [返回解密后的数据]
+             */
+           var plainText = sm2Decrypt(cipherText,"0a7e399f15e1ca85a4112635589fedce85eb62298d7154788c24c3485a598138", 1)
+           console.log("plainText:",plainText)
+
+        }
+    </script>
+</head>
+
+<body>
+
+<!-- MAIN CONTENT -->
+<div id="main_content_wrap" class="outer">
+    <section class="inner">
+        <hr size="1" />
+        <h4>SM2 Certificate Encryption</h4>
+        <fieldset>
+            <legend>SM2证书加密</legend>
+            <ul>
+                <li>
+                    <input type="button" value="测试，看控制台" onClick="doGenerate();" />
+                </li>
+
+                <li>
+                    <input type="button" value="加密、解密" onClick="test();" />
+                </li>
+
+            </ul>
+            <div>
+            </div>
+        </fieldset>
+    </section>
+</div>
+</body>
+
+</html>
